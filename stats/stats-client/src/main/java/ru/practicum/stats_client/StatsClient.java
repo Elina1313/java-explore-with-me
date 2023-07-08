@@ -29,13 +29,13 @@ public class StatsClient extends BaseClient {
     };
 
     @Autowired
-    public StatsClient(@Value("http://stats-server:9090") String serverUrl, RestTemplateBuilder builder) {//"${stats-server.url}"
+    public StatsClient(@Value("http://stats-server:9090") String serverUrl, RestTemplateBuilder builder) {
         super(builder
                 .uriTemplateHandler(new DefaultUriBuilderFactory(serverUrl))
                 .requestFactory(HttpComponentsClientHttpRequestFactory::new)
                 .build()
         );
-    }
+    }//"${stats-server.url}"
 
     public ResponseEntity<Object> addHit(String appName, String uri, String ip, LocalDateTime timestamp) {
         EndpointHit endpointHit = EndpointHit.builder()
