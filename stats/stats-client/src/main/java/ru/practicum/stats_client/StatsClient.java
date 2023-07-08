@@ -35,7 +35,7 @@ public class StatsClient extends BaseClient {
                 .requestFactory(HttpComponentsClientHttpRequestFactory::new)
                 .build()
         );
-    }//"${stats-server.url}"
+    } //"${stats-server.url}"
 
     public ResponseEntity<Object> addHit(String appName, String uri, String ip, LocalDateTime timestamp) {
         EndpointHit endpointHit = EndpointHit.builder()
