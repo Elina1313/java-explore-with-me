@@ -34,8 +34,6 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void deleteCategory(Long catId) {
-        categoryRepository.findById(catId)
-                .orElseThrow(() -> new CategoryNotFoundException("No category with such id " + catId));
         if (eventRepository.existsByCategoryId(catId)) {
             throw new CategoryIsNotEmptyException("Category is not empty");
         }

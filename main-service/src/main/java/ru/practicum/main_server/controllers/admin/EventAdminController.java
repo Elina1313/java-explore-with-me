@@ -1,6 +1,7 @@
 package ru.practicum.main_server.controllers.admin;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +33,8 @@ public class EventAdminController {
                                         @RequestParam(name = "from", required = false, defaultValue = "0") @PositiveOrZero Integer from,
                                         @RequestParam(name = "size", required = false, defaultValue = "10") @Positive Integer size,
                                         HttpServletRequest servletRequest) {
-        return eventService.getAllEventsByAdmin(users, states, categoriesId, rangeStart, rangeEnd, from, size, servletRequest);
+        return eventService.getAllEventsByAdmin(users, states, categoriesId, rangeStart, rangeEnd,
+                PageRequest.of(from / size, size), servletRequest);
     }
 
 

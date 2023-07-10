@@ -1,6 +1,7 @@
 package ru.practicum.main_server.controllers.priv;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.main_server.Services.Event.EventService;
@@ -36,7 +37,7 @@ public class EventPrivController {
                                                        required = false) Integer from,
                                                @RequestParam(name = "size", defaultValue = "10",
                                                        required = false) Integer size) {
-        return eventService.getEvents(userId, from, size);
+        return eventService.getEvents(userId, PageRequest.of(from / size, size));
     }
 
     @GetMapping("/{eventId}/requests")

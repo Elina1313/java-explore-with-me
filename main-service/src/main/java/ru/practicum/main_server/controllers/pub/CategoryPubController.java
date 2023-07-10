@@ -19,7 +19,7 @@ public class CategoryPubController {
     @ResponseStatus(HttpStatus.OK)
     public List<CategoryDto> getCategories(@RequestParam(required = false, defaultValue = "0") Integer from,
                                            @RequestParam(required = false, defaultValue = "10") Integer size) {
-        return categoryService.getCategories(PageRequest.of(from, size));
+        return categoryService.getCategories(PageRequest.of(from / size, size));
     }
 
     @GetMapping("/{catId}")

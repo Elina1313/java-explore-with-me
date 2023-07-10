@@ -62,9 +62,8 @@ public class EventServiceImpl implements EventService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<EventShortDto> getEvents(Long userId, Integer from, Integer size) {
-        Pageable page = PageRequest.of(from / size, size);
-        return eventMapper.toEventShortDtoList(eventRepository.findAllByInitiatorId(userId, page).toList());
+    public List<EventShortDto> getEvents(Long userId, Pageable pageable) {
+        return eventMapper.toEventShortDtoList(eventRepository.findAllByInitiatorId(userId, pageable).toList());
     }
 
     @Override
@@ -95,8 +94,7 @@ public class EventServiceImpl implements EventService {
         }
         updateEventEntity(updateEventAdminRequest, eventToUpdate);
 
-        eventRepository.save(eventToUpdate);
-        return eventMapper.toEventFullDto(eventToUpdate);
+        return eventMapper.toEventFullDto(eventRepository.save(eventToUpdate));
     }
 
     @Override
@@ -168,13 +166,11 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public List<EventFullDto> getAllEventsByAdmin(List<Long> userIds, List<String> states, List<Long> categories,
-                                                  String rangeStart, String rangeEnd, Integer from, Integer size,
+                                                  String rangeStart, String rangeEnd, Pageable pageable,
                                                   HttpServletRequest request) {
 
-        int page = from / size;
-        final PageRequest pageRequest = PageRequest.of(page, size);
         if (states == null & rangeStart == null & rangeEnd == null) {
-            return eventRepository.findAll(pageRequest)
+            return eventRepository.findAll(pageable)
                     .stream()
                     .map(eventMapper::toEventFullDto)
                     .collect(Collectors.toList());
@@ -197,20 +193,20 @@ public class EventServiceImpl implements EventService {
         }
 
         if (userIds.size() != 0 && states.size() != 0 && categories.size() != 0) {
-            return findEventDtos(userIds, categories, pageRequest, stateList, start, end);
+            return findEventDtos(userIds, categories, pageable, stateList, start, end);
         }
         if (userIds.size() == 0 && categories.size() != 0) {
-            return findEventDtos(userIds, categories, pageRequest, stateList, start, end);
+            return findEventDtos(userIds, categories, pageable, stateList, start, end);
         } else {
             return new ArrayList<>();
         }
     }
 
     private List<EventFullDto> findEventDtos(List<Long> userIds, List<Long> categories,
-                                             PageRequest pageRequest, List<EventState> stateList,
+                                             Pageable pageable, List<EventState> stateList,
                                              LocalDateTime start, LocalDateTime end) {
         Page<Event> eventsWithPage = eventRepository.findAllWithAllParameters(userIds, stateList, categories, start, end,
-                pageRequest);
+                pageable);
         Set<Long> eventIds = eventsWithPage.stream().map(Event::getId).collect(Collectors.toSet());
         Map<Long, Long> viewStatsMap = statsClient.getSetViews(eventIds);
 
@@ -223,7 +219,7 @@ public class EventServiceImpl implements EventService {
     @Override
     public List<EventShortDto> getAllEventsByPublic(String text, List<Long> categories, Boolean paid, String rangeStart,
                                                     String rangeEnd, Boolean onlyAvailable, EventSortValue sort,
-                                                    Integer from, Integer size, HttpServletRequest request) {
+                                                    Pageable pageable, HttpServletRequest request) {
 
         LocalDateTime start = null;
         LocalDateTime end = null;
@@ -247,8 +243,7 @@ public class EventServiceImpl implements EventService {
                 }
             }
         }
-
-        final PageRequest pageRequest = PageRequest.of(from / size, size,
+        final Pageable pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
                 Sort.by(EventSortValue.EVENT_DATE.equals(sort) ? "eventDate" : "views"));
         List<Event> eventEntities = eventRepository.searchPublishedEvents(categories, paid, start, end, pageRequest)
                 .getContent();

@@ -2,6 +2,7 @@ package ru.practicum.main_server.Services.Compilation;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.practicum.main_server.dtos.compilation.CompilationDto;
 import ru.practicum.main_server.dtos.compilation.NewCompilationDto;
@@ -45,13 +46,13 @@ public class CompilationServiceImpl implements CompilationService {
         return mapper.mapToCompilationDto(savedCompilation);
     }
 
-    @Transactional
+    @Override
     public void deleteCompilation(Long compId) {
         compilationRepository.deleteById(compId);
         log.debug("Compilation with ID = {} is deleted", compId);
     }
 
-    @Transactional
+    @Override
     public CompilationDto updateCompilation(Long compId, UpdateCompilationRequestDto updateCompilationRequestDto) {
         Compilation oldCompilation = compilationRepository.findById(compId)
                 .orElseThrow(() -> new CompilationNotExistException("Can't update compilation - " +
@@ -73,7 +74,7 @@ public class CompilationServiceImpl implements CompilationService {
     }
 
     @Override
-    public List<CompilationDto> getCompilations(Boolean pinned, Integer from, Integer size) {
+    public List<CompilationDto> getCompilations(Boolean pinned, Pageable pageable) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Compilation> query = builder.createQuery(Compilation.class);
 
@@ -92,8 +93,8 @@ public class CompilationServiceImpl implements CompilationService {
 
         query.select(root).where(criteria);
         List<Compilation> compilations = entityManager.createQuery(query)
-                .setFirstResult(from)
-                .setMaxResults(size)
+                .setFirstResult(pageable.getPageNumber())
+                .setMaxResults(pageable.getPageSize())
                 .getResultList();
 
         return mapper.mapToListCompilationDto(compilations);

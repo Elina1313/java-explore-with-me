@@ -1,6 +1,7 @@
 package ru.practicum.main_server.controllers.pub;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.main_server.Services.Event.EventService;
 import ru.practicum.main_server.dtos.event.EventFullDto;
@@ -27,7 +28,8 @@ public class EventPubController {
                                                    @RequestParam(name = "from", required = false, defaultValue = "0") Integer from,
                                                    @RequestParam(name = "size", required = false, defaultValue = "10") Integer size,
                                                    HttpServletRequest request) {
-        return eventService.getAllEventsByPublic(text, categories, paid, rangeStart, rangeEnd, onlyAvailable, sort, from, size, request);
+        return eventService.getAllEventsByPublic(text, categories, paid, rangeStart, rangeEnd, onlyAvailable, sort,
+                PageRequest.of(from / size, size), request);
     }
 
     @GetMapping("/{id}")

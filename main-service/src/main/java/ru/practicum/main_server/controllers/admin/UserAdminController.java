@@ -1,6 +1,7 @@
 package ru.practicum.main_server.controllers.admin;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.main_server.Services.User.UserServiceImpl;
@@ -26,7 +27,7 @@ public class UserAdminController {
     public List<UserDto> getUsers(@RequestParam(required = false, name = "ids") List<Long> ids,
                                   @RequestParam(name = "from", defaultValue = "0") Integer from,
                                   @RequestParam(name = "size", defaultValue = "10") Integer size) {
-        return userService.getUsers(ids, from, size);
+        return userService.getUsers(ids, PageRequest.of(from / size, size));
     }
 
     @DeleteMapping("/{userId}")

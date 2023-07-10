@@ -1,7 +1,6 @@
 package ru.practicum.main_server.Services.User;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.practicum.main_server.dtos.user.UserDto;
@@ -27,10 +26,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDto> getUsers(List<Long> ids, Integer from, Integer size) {
-        Pageable page = PageRequest.of(from / size, size);
+    public List<UserDto> getUsers(List<Long> ids, Pageable pageable) {
         return ids != null ? userMapper.toUserDtoList(userRepository.findAllById(ids))
-                : userMapper.toUserDtoList(userRepository.findAll(page).toList());
+                : userMapper.toUserDtoList(userRepository.findAll(pageable).toList());
     }
 
     @Override
