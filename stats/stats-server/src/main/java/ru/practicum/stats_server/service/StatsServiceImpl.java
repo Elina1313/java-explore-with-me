@@ -36,8 +36,12 @@ public class StatsServiceImpl implements StatsService {
             }
         } else {
             if (unique) {
+                uris.replaceAll(s -> s.replace("[", ""));
+                uris.replaceAll(s -> s.replace("]", ""));
                 return statsRepository.getStatsByUrisDistinctIp(start, end, uris);
             } else {
+                uris.replaceAll(s -> s.replace("[", ""));
+                uris.replaceAll(s -> s.replace("]", ""));
                 return statsRepository.getStatsByUris(start, end, uris);
             }
         }
