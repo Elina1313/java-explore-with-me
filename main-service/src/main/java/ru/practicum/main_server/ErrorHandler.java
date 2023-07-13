@@ -146,4 +146,18 @@ public class ErrorHandler {
         return new ApiError(exception.getMessage(), "For the requested operation the conditions are not met.",
                 HttpStatus.CONFLICT.getReasonPhrase().toUpperCase(), LocalDateTime.now().format(dateFormatter));
     }
+
+    @ExceptionHandler(ForbiddenException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ApiError handleForbiddenException(final ForbiddenException exception) {
+        return new ApiError(HttpStatus.CONFLICT.name(), "For the requested operation the conditions are not met.",
+                HttpStatus.CONFLICT.getReasonPhrase().toUpperCase(), LocalDateTime.now().format(dateFormatter));
+    }
+
+    @ExceptionHandler(CommentNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ApiError handleNotFoundException(final CommentNotFoundException exception) {
+        return new ApiError(HttpStatus.NOT_FOUND.name(), "Object is not found.",
+                HttpStatus.NOT_FOUND.getReasonPhrase().toUpperCase(), LocalDateTime.now().format(dateFormatter));
+    }
 }

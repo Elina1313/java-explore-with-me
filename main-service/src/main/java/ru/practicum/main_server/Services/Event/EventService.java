@@ -3,6 +3,7 @@ package ru.practicum.main_server.Services.Event;
 import org.springframework.data.domain.Pageable;
 import ru.practicum.main_server.dtos.event.*;
 import ru.practicum.main_server.enums.EventSortValue;
+import ru.practicum.main_server.models.Event;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -28,4 +29,6 @@ public interface EventService {
                                              HttpServletRequest request);
 
     EventFullDto getEvent(Long id, HttpServletRequest request);
+
+    Event getEventById(Long eventId);
 }
