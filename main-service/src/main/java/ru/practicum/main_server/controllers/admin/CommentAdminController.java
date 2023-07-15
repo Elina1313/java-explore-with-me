@@ -20,16 +20,15 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/admin/comments")
 @Validated
+@RequestMapping("/admin/comments")
 public class CommentAdminController {
     private final CommentService commentService;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<CommentDto> getCommentsByAdmin(
-            @RequestParam(defaultValue = "0") @PositiveOrZero Integer from,
-            @RequestParam(defaultValue = "10") @Positive Integer size) {
+    public List<CommentDto> getCommentsByAdmin(@RequestParam(defaultValue = "0") @PositiveOrZero Integer from,
+                                               @RequestParam(defaultValue = "10") @Positive Integer size) {
         return commentService.getCommentsByAdmin(PageRequest.of(from / size, size));
     }
 

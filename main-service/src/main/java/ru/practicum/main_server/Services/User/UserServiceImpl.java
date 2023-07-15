@@ -5,7 +5,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.practicum.main_server.dtos.user.UserDto;
 import ru.practicum.main_server.exceptions.NameAlreadyExistException;
+import ru.practicum.main_server.exceptions.UserNotExistException;
 import ru.practicum.main_server.mappers.UserMapper;
+import ru.practicum.main_server.models.User;
 import ru.practicum.main_server.repositories.UserRepository;
 
 import java.util.List;
@@ -34,5 +36,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUser(Long userId) {
         userRepository.deleteById(userId);
+    }
+
+    @Override
+    public User getUserById(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotExistException("No such user id " + userId));
     }
 }

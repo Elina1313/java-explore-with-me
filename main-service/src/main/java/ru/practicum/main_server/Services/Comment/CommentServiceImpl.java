@@ -53,9 +53,7 @@ public class CommentServiceImpl implements CommentService {
             eventService.getEventById(eventId);
 
             comments = commentRepository.findAllByAuthorIdAndEventId(userId, eventId);
-        } else {
-            comments = commentRepository.findAllByAuthorId(userId);
-        }
+        } else comments = commentRepository.findAllByAuthorId(userId);
 
         return toCommentsDto(comments);
     }

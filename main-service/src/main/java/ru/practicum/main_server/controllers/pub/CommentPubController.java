@@ -19,23 +19,22 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@Validated
 @RequestMapping("/comments")
-//@Validated
 public class CommentPubController {
     private final CommentService commentService;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<CommentDto> getCommentsByPublic(
-            @RequestParam Long eventId,
-            @RequestParam(defaultValue = "0") @PositiveOrZero Integer from,
-            @RequestParam(defaultValue = "10") @Positive Integer size) {
+    public List<CommentDto> getCommentsByPub(@RequestParam Long eventId,
+                                             @RequestParam(defaultValue = "0") @PositiveOrZero Integer from,
+                                             @RequestParam(defaultValue = "10") @Positive Integer size) {
         return commentService.getCommentsByPub(eventId, PageRequest.of(from / size, size));
     }
 
     @GetMapping("/{commentId}")
     @ResponseStatus(HttpStatus.OK)
-    public CommentDto getCommentByPublic(@PathVariable Long commentId) {
+    public CommentDto getCommentByPub(@PathVariable Long commentId) {
         return commentService.getCommentByPub(commentId);
     }
 }

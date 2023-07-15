@@ -1,6 +1,5 @@
 package ru.practicum.main_server.Services.Comment;
 
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import ru.practicum.main_server.dtos.comment.CommentDto;
 import ru.practicum.main_server.dtos.comment.NewCommentDto;

@@ -25,37 +25,37 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@Validated
 @RequestMapping("/users/{userId}/comments")
-//@Validated
 public class CommentPrivController {
     private final CommentService commentService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public CommentDto createByPriv(@PathVariable Long userId,
-                                      @RequestParam Long eventId,
-                                      @Valid @RequestBody NewCommentDto newCommentDto) {
+                                   @RequestParam Long eventId,
+                                   @Valid @RequestBody NewCommentDto newCommentDto) {
         return commentService.createByPriv(userId, eventId, newCommentDto);
     }
 
     @PatchMapping("/{commentId}")
     @ResponseStatus(HttpStatus.OK)
     public CommentDto updateByPriv(@PathVariable Long userId,
-                                     @PathVariable Long commentId,
-                                     @Valid @RequestBody NewCommentDto newCommentDto) {
+                                   @PathVariable Long commentId,
+                                   @Valid @RequestBody NewCommentDto newCommentDto) {
         return commentService.updateByPriv(userId, commentId, newCommentDto);
     }
 
     @DeleteMapping("/{commentId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteByPrivate(@PathVariable Long userId,
-                                @PathVariable Long commentId) {
+    public void deleteByPriv(@PathVariable Long userId,
+                             @PathVariable Long commentId) {
         commentService.deleteByPriv(userId, commentId);
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<CommentDto> getCommentsByPrivate(
+    public List<CommentDto> getCommentsByPriv(
             @PathVariable Long userId,
             @RequestParam(required = false) Long eventId,
             @RequestParam(defaultValue = "0") @PositiveOrZero Integer from,

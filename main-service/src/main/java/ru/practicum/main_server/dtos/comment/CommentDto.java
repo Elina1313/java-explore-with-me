@@ -3,6 +3,7 @@ package ru.practicum.main_server.dtos.comment;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import ru.practicum.main_server.dtos.user.UserShortDto;
+import ru.practicum.main_server.models.Pattern;
 
 import java.time.LocalDateTime;
 
@@ -17,9 +18,9 @@ public class CommentDto {
     private UserShortDto author;
     private Long eventId;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", shape = JsonFormat.Shape.STRING)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Pattern.DATE)
     private LocalDateTime createdOn;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", shape = JsonFormat.Shape.STRING)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Pattern.DATE)
     private LocalDateTime editedOn;
 }
