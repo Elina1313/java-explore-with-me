@@ -10,7 +10,6 @@ import ru.practicum.main_server.models.Comment;
 @Mapper(componentModel = "spring", uses = {UserMapper.class})
 public interface CommentMapper {
 
-    @Mapping(target = "id", source = "user.id")
     @Mapping(target = "id", source = "event.id")
     CommentDto toCommentDto(Comment comment);
 }
