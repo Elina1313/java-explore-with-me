@@ -286,4 +286,11 @@ public class EventServiceImpl implements EventService {
         return eventDto;
     }
 
+    @Override
+    public Event getEventById(Long eventId) {
+
+        return eventRepository.findById(eventId)
+                .orElseThrow(() -> new EventNotExistException("Event with id " + eventId + " is not found."));
+    }
+
 }
